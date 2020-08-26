@@ -13,7 +13,6 @@ import os, random, string
 from pathlib import Path
 import dj_database_url
 import django_heroku
-from decouple import config
 
 
 
@@ -21,15 +20,15 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-
+PROJECT_NAME = str(Path(__file__).resolve(strict=True).parent).split('/')[-1]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default=''.join([random.choice(string.printable) for i in range(60)]))
-DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = os.environ.get('SECRET_KEY', ''.join([random.choice(string.printable) for i in range(60)]))
+DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['*'])
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['*'])
 
 
 # Application definition
@@ -58,7 +57,7 @@ MIDDLEWARE = [
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-ROOT_URLCONF = 'baseapp.urls'
+ROOT_URLCONF = f'{PROJECT_NAME}.urls'
 
 TEMPLATES = [
     {
@@ -76,19 +75,25 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'baseapp.wsgi.application'
+WSGI_APPLICATION = f'{PROJECT_NAME}.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': config(
-        'DATABASE_URL',
-        default='sqlite:///' + BASE_DIR / 'db.sqlite3',
-        cast=db_url
-    )
-}
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL')
+        )
+    }
 
 
 # Password validation
@@ -116,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 
-TIME_ZONE = 'UTC' if not DEBUG else 'Asia/Ho_Chi_Minh'
+TIME_ZONE = 'UTC' if not DEBUG else TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
