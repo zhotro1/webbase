@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 import os
 from django.core.wsgi import get_wsgi_application
 
-project_name = os.getcwd().split('/')[-1]
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{project_name}.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'baseapp.settings')
 
 application = get_wsgi_application()
