@@ -12,6 +12,7 @@ import os
 from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{settings.PROJECT_NAME}.settings')
+project_name = os.getcwd().split('/')[-1]
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{project_name}.settings')
 
 application = get_wsgi_application()

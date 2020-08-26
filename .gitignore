@@ -4,3 +4,4 @@ settings.ini
 .idea
 __pycache__/
 media/
+test.py

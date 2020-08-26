@@ -16,7 +16,7 @@ from decouple import config
 import django_heroku
 
 
-PROJECT_NAME = 'baseapp'
+PROJECT_NAME = os.getcwd().split('/')[-1]
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
