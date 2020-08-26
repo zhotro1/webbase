@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os, random, string
 from pathlib import Path
 import dj_database_url
-from decouple import config
 import django_heroku
 
 
@@ -46,8 +45,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,10 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-if DEBUG:
-    TIME_ZONE = 'UTC'
-else:
-    TIME_ZONE = 'Asia/Ho_Chi_Minh'
+
+TIME_ZONE = 'UTC' if not DEBUG else 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
